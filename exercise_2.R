@@ -41,12 +41,12 @@ hemoglobin_aov <- lm(hemoglobin ~ rate*method, data = hemoglobin_df)
 anova(hemoglobin_aov)
 
 # The p value for testing H0: alpha_i = 0 for all i is 2.404e-09. 
-# Therefore, we reject the null hypothesis and conclude that the rate of hemoglobin 
+# Therefore, we reject the null hypothesis and conclude that the rate of sulfamerazine 
 # is not the same for all methods.
 
 # The p value for testing H0: beta_j = 0 for all j is 0.2161.
 # Therefore, we fail to reject the null hypothesis and conclude that the two methods 
-# of sulfamerazine is the same for all rates.
+# for different types sulfamerazine is the same for all rates of sulfamerazine.
 
 # The p value for testing H0: gamma_i*j = 0 for all (i, j) is 0.3769.
 # So, there is no evidence for interaction.
@@ -54,7 +54,7 @@ anova(hemoglobin_aov)
 # Summary of test using treatment parameterization (alpha_1 = 0)
 summary(hemoglobin_aov)
 
-# The rate of hemoglobin seems to have a significant effect on the hemoglobin level
+# The rate of sulfamerazine seems to have a significant effect on the hemoglobin level
 # and thereby has a greater influence on the hemoglobin level.  
 
 ### c)
@@ -65,7 +65,7 @@ anova(hemoglobin_aov_2)
 
 # The p value for testing HA: alpha_i = 0 for all i is 2.02e-09.
 # The p value for testing HB: beta_j = 0 for all j is 0.2163.
-# So only rate has a main effect in the additive model. 
+# So only rate of sulfamerazinehas a main effect in the additive model. 
 
 # Concluding from the summary of hemoglobin_aov, the 
 # combination of rate 2 with method B yields the 
@@ -83,5 +83,32 @@ mean(hemoglobin_df$hemoglobin[hemoglobin_df$rate == 2 & hemoglobin_df$method == 
 
 # Rate 2 has the highest hemoglobin level when using any method.
 
-# d) 
+### d) 
+
+# One-Way ANOVA for rate, ignoring methods
+rate_aov <- lm(hemoglobin ~ rate, data = hemoglobin_df)
+anova(rate_aov)
+
+# Testing H0: alpha_1=...=alpha_4 is
+# rejected with a p value of 2.129e-09.
+
+# The rate of sulfamerazine seems to have a significant effect on the hemoglobin level
+# Is it useful?
+
+# explain!
+
+### e)
+
+# Kruskal-Wallis rank test for rate
+kruskal.test(hemoglobin ~ rate, data = hemoglobin_df)
+
+# The p-value for this test is 1.777e-07
+
+qqnorm(rate_aov$residuals)
+qqline(rate_aov$residuals)
+# The residuals do not seem to deviate significantly from
+# normal, so both tests could be used here. 
+
+# explain!
+
 
