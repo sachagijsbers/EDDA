@@ -12,6 +12,9 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{listings}
+\usepackage{enumitem}
+\renewcommand\thesubsection{\Alph{subsection}}
 
 \title{Report 1}
 \author{You}
@@ -26,6 +29,15 @@ Your abstract.
 \section{Exercise 1}
 
 \section{Exercise 2}
+
+\subsection{Randomization in R}
+\begin{lstlisting}[language=R]
+rbind(rep(1:I, each = N * J), rep(1:J, N*I), sample(1:(N*I*J)))
+\end{lstlisting}
+
+
+
+
 
 \section{Exercise 3}
 
