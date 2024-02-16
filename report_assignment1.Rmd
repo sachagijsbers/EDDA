@@ -1,0 +1,17 @@
+---
+title: "Report assignment 1"
+author: "..., group 22"
+date: "1 February 2024"
+output: pdf_document
+fontsize: 11pt
+highlight: tango
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+## Exercise 1
+
+## Exercise 2
+
+## Exercise 3
