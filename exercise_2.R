@@ -22,7 +22,7 @@ I <- length(rates)
 methods <- unique(hemoglobin_df$method)
 J <- length(methods)
 
-# Number of columns in the data
+# Number of columns in the data (not sure if this is correct!)
 N <- 80/(I*J)
 
 # Randomization in R (from slides)
