@@ -9,8 +9,12 @@ library(ggplot2)
 ggplot(hemoglobin_df, aes(x = factor(rate), y = hemoglobin, fill = factor(rate))) + 
   geom_boxplot() + 
   facet_wrap(~ method, scales = "free_x") +
-  labs(x = "Rate", y = "Hemoglobin (g/100 ml)", fill = "Rate") +
-  theme_minimal()
+  labs(x = "Rate of sulfamerazine", y = "Hemoglobin (g/100 ml)", fill = "Rate") +
+  theme_minimal() +
+  theme(legend.position = "none") + # to remove rate legend on right 
+  # title
+  ggtitle("Hemoglobin levels by rate and method")
+
 
 
 ### a) 
@@ -36,7 +40,6 @@ boxplot(hemoglobin_df$hemoglobin ~ hemoglobin_df$method)
 # Two-Way ANOVA for hemoglobin data
 hemoglobin_df$rate <- as.factor(hemoglobin_df$rate)
 hemoglobin_df$method <- as.factor(hemoglobin_df$method)
-
 hemoglobin_aov <- lm(hemoglobin ~ rate*method, data = hemoglobin_df)
 anova(hemoglobin_aov)
 
