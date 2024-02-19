@@ -13,6 +13,15 @@
 \usepackage{graphicx}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 \usepackage{listings}
+\lstset{language=R,
+    basicstyle=\small\ttfamily,
+    stringstyle=\color{DarkGreen},
+    otherkeywords={0,1,2,3,4,5,6,7,8,9},
+    morekeywords={TRUE,FALSE},
+    deletekeywords={data,frame,length,as,character},
+    keywordstyle=\color{blue},
+    commentstyle=\color{DarkGreen},
+}
 \usepackage{enumitem}
 \renewcommand\thesubsection{\Alph{subsection}}
 
@@ -28,15 +37,26 @@ Your abstract.
 
 \section{Exercise 1}
 
-\section{Exercise 2}
+\section{Hemoglobin in trout}
 
 \subsection{Randomization in R}
-\begin{lstlisting}[language=R]
-rbind(rep(1:I, each = N * J), rep(1:J, N*I), sample(1:(N*I*J)))
+\begin{lstlisting}
+    rbind(rep(1:I, each = N * J), rep(1:J, N*I), sample(1:(N*I*J)))
 \end{lstlisting}
 
+\subsection{Two-way ANOVA}
+\begin{lstlisting}
+    hemoglobin_df$rate <- as.factor(hemoglobin_df$rate) 
+    hemoglobin_df$method <- as.factor(hemoglobin_df$method)
+    hemoglobin_aov <- lm(hemoglobin ~ rate*method, data = hemoglobin_df)
+    anova(hemoglobin_aov)   
+\end{lstlisting}
 
+\subsection{Additive model}
 
+\subsection{One-way ANOVA}
+
+\subsection{Kruskal-Wallis test}
 
 
 \section{Exercise 3}
