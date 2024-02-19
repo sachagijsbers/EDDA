@@ -43,6 +43,10 @@ hemoglobin_df$method <- as.factor(hemoglobin_df$method)
 hemoglobin_aov <- lm(hemoglobin ~ rate*method, data = hemoglobin_df)
 anova(hemoglobin_aov)
 
+# install.packages("xtable")
+library(xtable)
+xtable(anova(hemoglobin_aov))
+
 # The p value for testing H0: alpha_i = 0 for all i is 2.404e-09. 
 # Therefore, we reject the null hypothesis and conclude that the rate of sulfamerazine 
 # is not the same for all methods.
@@ -56,6 +60,7 @@ anova(hemoglobin_aov)
 
 # Summary of test using treatment parameterization (alpha_1 = 0)
 summary(hemoglobin_aov)
+xtable(summary(hemoglobin_aov))
 
 # The rate of sulfamerazine seems to have a significant effect on the hemoglobin level
 # and thereby has a greater influence on the hemoglobin level.  
