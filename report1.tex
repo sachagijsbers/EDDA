@@ -121,6 +121,8 @@ The p value for testing H0: $\gamma_{i*j}$ = 0 for all (i, j) is 0.3769. which m
 \end{tabular}
 \end{table}
 
+Concluding from the summary of interaction ANOVA of the Hemoglobin data set in Table \ref{tab:treatment}, the combination of rate 2 with method B yields the highest hemoglobin level. The mean hemoglobin value for rate 3 by using method A can be derived from the Table \ref{tab:treatment}, is 7.200 + 1.83 = 9.03. The mean hemoglobin value for rate 2 by using method B is 7.200 + 2.13 - 0.45 + 1.26 = 10.14.
+
 \subsection{Additive model}
 \begin{lstlisting}[caption="Additive model for Two-Way ANOVA", label={lst:Add}]
     hemoglobin_aov_2 <- lm(hemoglobin ~ rate+method, data = hemoglobin_df)
@@ -128,6 +130,8 @@ The p value for testing H0: $\gamma_{i*j}$ = 0 for all (i, j) is 0.3769. which m
 \end{lstlisting}
 
 \begin{table}[ht]
+\caption{Additive model for Two-way ANOVA}
+\label{tab:add}
 \centering
 \begin{tabular}{lrrrrr}
   \hline
@@ -142,15 +146,27 @@ rate & 3 & 90.56 & 30.19 & 19.43 & 2.02e-09 \\
 
 The p value for testing HA: $\alpha_i = 0$ for all i is 2.02e-09.
 The p value for testing HB: $\beta_j = 0$ for all j is 0.2163.
-So only rate of sulfamerazinehas a main effect in the additive model.
+So only rate of sulfamerazine has a main effect in the additive model.
 
-Concluding from the summary of hemoglobin\_aov, the combination of rate 2 with method B yields the highest hemoglobin level.
-
-Mean hemoglobin value for rate 3 by using method A from the summary of hemoglobin\_aov 7.200 + 1.83
-
-Mean hemoglobin value for rate 2 by using method B 7.200 + 2.13 - 0.45 + 1.26
+\begin{table}[ht]
+\caption{Treatment Parameterization for additive model}
+\label{tab:treatment_add}
+\centering
+\begin{tabular}{rrrrr}
+  \hline
+ & Estimate & Std. Error & t value & Pr($>$$|$t$|$) \\ 
+  \hline
+(Intercept) & 6.8012 & 0.3116 & 21.83 & 0.0000 \\ 
+  rate2 & 2.7600 & 0.3941 & 7.00 & 9.18e-10 \\ 
+  rate3 & 2.4050 & 0.3941 & 6.10 & 4.24e-08 \\ 
+  rate4 & 1.8800 & 0.3941 & 4.77 & 8.86e-06 \\ 
+  methodB & 0.3475 & 0.2787 & 1.25 & 0.2163 \\ 
+   \hline
+\end{tabular}
+\end{table}
 
 \subsection{One-way ANOVA}
+Because we did not observe any effect of the factor method, it may provide useful to ignore the variable method and perform a One-Way ANOVA for all rates. 
 \begin{lstlisting}[caption="One-Way ANOVA", label={lst:owa}]
     rate_aov <- lm(hemoglobin ~ rate, data = hemoglobin_df)
     anova(rate_aov)
@@ -165,25 +181,49 @@ Is it useful?
 \end{lstlisting}
 The p-value for this test is 1.777e-07
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=5cm]{normal_fit_res_ex2.png}
+    \caption{The left graph shows qqnorm plot of the residuals and the right plot the fitted values against residuals.}
+    \label{fig:norfitresex2}
+\end{figure}
+When applying any ANOVA model to a dataset, it is important to check normality of errors. This can be done by the two following tools: qqnorm plot of the residuals and the plot of fitted against residuals, which are visualized in Figure \ref{fig:norfitresex2}.  
+The residuals do not seem to deviate significantly from
+normal and the plot of the fitted values $Y_ik = \mu_i$ against
+the residuals $e_ik$ does not show a pattern, which means both ANOVA and Kruskal-Wallis could be used here. Whenever the normality assumption fails, only the Kruskal-Wallis test could be used, as it does not rely on normality and is based on ranks. 
 
 \section{Exercise 3}
 
-\subsection{A}
+\subsection{Difference in acidity Starter 1 \& Starter 2.}
 
 \begin{table}[H]
 \centering
 \begin{tabular}{lcccc}
 \hline
-\textbf{Term} & \textbf{Estimate} & \textbf{Std. Error} & \textbf{t value} & \textbf{Pr$(>|t|)$} \\
+\textbf{Predictor} & \textbf{Estimate} & \textbf{Std. Error} & \textbf{t value} & \textbf{Pr$(>|t|)$} \\
 \hline
-Intercept & 7.3330 & 1.3373 & 5.484 & 1.93e-05 *** \\
-Starter & 0.1992 & 0.2483 & 0.802 & 0.431 \\
-Batch & 0.3116 & 0.2483 & 1.255 & 0.223 \\
-Position & -0.0674 & 0.2483 & -0.271 & 0.789 \\
+(Intercept) & 8.6616 & 0.5329 & 16.255 & $<$0.0001\\
+starter2    & -0.1500 & 0.4673 & -0.321 & 0.7538    \\
+starter3    & -0.9800 & 0.4673 & -2.097 & 0.0579  \\
+starter4    & 2.8100 & 0.4673 & 6.013  & $<$0.0001\\
+starter5    & -0.4840 & 0.4673 & -1.036 & 0.3208    \\
+batch2      & -1.3480 & 0.4673 & -2.884 & 0.0137  \\
+batch3      & 0.2760 & 0.4673 & 0.591  & 0.5658    \\
+batch4      & 1.3680 & 0.4673 & 2.927  & 0.0127  \\
+batch5      & 0.2000 & 0.4673 & 0.428  & 0.6763    \\
+position2   & -0.6180 & 0.4673 & -1.322 & 0.2107    \\
+position3   & -0.0380 & 0.4673 & -0.081 & 0.9365    \\
+position4   & -0.7640 & 0.4673 & -1.635 & 0.1280    \\
+position5   & -0.2640 & 0.4673 & -0.565 & 0.5825    \\
 \hline
 \end{tabular}
-\caption{Summary of the linear model for acidity}
+\caption{Summary of linear model for acidity.}
+\label{table:acidity}
 \end{table}
+
+Table \ref{table:acidity} shows the estimates for starter2, starter3, starter4, and starter5 and how they differ in acidity on average compared to the reference category starter1. the same goes for batch and position and how they differ from their reference batch1 and position1. 
+
+To see if there is a significant difference between starter1 and starter2 we have to account for 2 main values, the estimate and the p-value. We can see that the estimate from starter2 doesn't differ much from starter1, especially when we compare it to starter4. If we then also take into account the p-value for starter2 (0.7538) 
 
 
 
