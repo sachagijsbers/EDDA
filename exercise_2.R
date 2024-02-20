@@ -123,10 +123,16 @@ kruskal.test(hemoglobin ~ rate, data = hemoglobin_df)
 
 # The p-value for this test is 1.777e-07
 
-qqnorm(rate_aov$residuals)
-qqline(rate_aov$residuals)
+par(mfrow=c(1,2))
+qqnorm(residuals(rate_aov))
+qqline(residuals(rate_aov))
+plot(fitted(rate_aov),residuals(rate_aov), xlab = "Fitted values", ylab = "Residuals")
+title("Fitted vs residuals")
+
 # The residuals do not seem to deviate significantly from
 # normal, so both tests could be used here. 
+# The plot of the fitted values $Y_ik = \mu_i$ against
+# the residuals $e_ik$ does not show any pattern, so the assumption
 
 # explain!
 
