@@ -25,6 +25,7 @@
 \renewcommand\thesubsection{\Alph{subsection}}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{float}
 
 
 \title{Report 1}
@@ -150,11 +151,49 @@ Mean hemoglobin value for rate 3 by using method A from the summary of hemoglobi
 Mean hemoglobin value for rate 2 by using method B 7.200 + 2.13 - 0.45 + 1.26
 
 \subsection{One-way ANOVA}
+\begin{lstlisting}[caption="One-Way ANOVA", label={lst:owa}]
+    rate_aov <- lm(hemoglobin ~ rate, data = hemoglobin_df)
+    anova(rate_aov)
+\end{lstlisting}
+Testing H0: $\alpha_1=...=\alpha_4$ is rejected with a p value of 2.129e-09.
+The rate of sulfamerazine seems to have a significant effect on the hemoglobin level
+Is it useful?
 
 \subsection{Kruskal-Wallis test}
+\begin{lstlisting}[caption="Kruskal-Wallis", label={lst:kw}]
+    kruskal.test(hemoglobin ~ rate, data = hemoglobin_df)
+\end{lstlisting}
+The p-value for this test is 1.777e-07
 
 
 \section{Exercise 3}
+
+\subsection{A}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lcccc}
+\hline
+\textbf{Term} & \textbf{Estimate} & \textbf{Std. Error} & \textbf{t value} & \textbf{Pr$(>|t|)$} \\
+\hline
+Intercept & 7.3330 & 1.3373 & 5.484 & 1.93e-05 *** \\
+Starter & 0.1992 & 0.2483 & 0.802 & 0.431 \\
+Batch & 0.3116 & 0.2483 & 1.255 & 0.223 \\
+Position & -0.0674 & 0.2483 & -0.271 & 0.789 \\
+\hline
+\end{tabular}
+\caption{Summary of the linear model for acidity}
+\end{table}
+
+
+
+\subsection{B}
+
+
+
+\subsection{C}
+
+\subsection{D}
 
 
 \bibliographystyle{alpha}
