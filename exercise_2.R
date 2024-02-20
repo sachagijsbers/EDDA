@@ -86,6 +86,7 @@ xtable(anova(hemoglobin_aov_2))
 # The p value for testing HB: beta_j = 0 for all j is 0.2163.
 # So only rate of sulfamerazinehas a main effect in the additive model. 
 
+
 # Concluding from the summary of hemoglobin_aov, the 
 # combination of rate 2 with method B yields the 
 # highest hemoglobin level.
@@ -102,6 +103,10 @@ mean(hemoglobin_df$hemoglobin[hemoglobin_df$rate == 2 & hemoglobin_df$method == 
 
 # Rate 2 has the highest hemoglobin level when using any method.
 
+summary(hemoglobin_aov_2)
+xtable(summary(hemoglobin_aov_2))
+
+6.8012 + 2.76 + 0.3475
 ### d) 
 
 # One-Way ANOVA for rate, ignoring methods
