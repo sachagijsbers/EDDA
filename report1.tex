@@ -36,6 +36,7 @@ Your abstract.
 
 \section{Ice cream}
 
+
 \section{Hemoglobin in trout}
 
 \begin{figure}[h]
@@ -46,17 +47,21 @@ Your abstract.
 \end{figure}
 
 \subsection{Randomization in R}
+This dataset has an numerical data for hemoglobin and two factors (rate and method) that have levels (1,2,3,4 for rate, A and B for method). This dataset has a balanced design, because every combination of rate and method has 10 observations (N). This can be denoted as $n_{i,j} = N$, for subgroups rate (i) and method (j).
 \begin{lstlisting}[caption="Randomization in R",label={lst:R}]
     rbind(rep(1:I, each = N * J), rep(1:J, N*I), sample(1:(N*I*J)))
 \end{lstlisting}
+in Listing \ref{lst:R}, an R-code for the randomization process to distribute 80 fishes over all combinations of levels of factors rate and method is shown.
 
 \subsection{Two-way ANOVA}
+To test the effects of factors rate, method and their interaction on the response variable hemoglobin, a Two-way ANOVA test was performed following the R-code in Listing \ref{lst:T}. 
 \begin{lstlisting}[caption="Two-way ANOVA", label={lst:T}]
     hemoglobin_df$rate <- as.factor(hemoglobin_df$rate) 
     hemoglobin_df$method <- as.factor(hemoglobin_df$method)
     hemoglobin_aov <- lm(hemoglobin ~ rate*method, data = hemoglobin_df)
     anova(hemoglobin_aov)   
 \end{lstlisting}
+rate * method indicates rate + method + rate:method, so in this test, we test if interaction can be disregarded. 
 
 \begin{table}[ht]
 \centering
@@ -74,14 +79,8 @@ rate & 3 & 90.56 & 30.19 & 19.47 & 0.0000 \\
 \end{tabular}
 \end{table}
 
-The p value for testing H0: $\alpha_i$ = 0 for all i is 2.404e-09. 
-Therefore, we reject the null hypothesis and conclude that the rate of sulfamerazine is not the same for all methods.
+The p value for testing H0: $\gamma_{i*j}$ = 0 for all (i, j) is 0.3769. which means there is no evidence for interaction. We do not reject the hypothesis, so we can use the additive model to test which factor has most effect on the hemoglobin levels. 
 
-The p value for testing H0: $\beta_j$ = 0 for all j is 0.2161.
-Therefore, we fail to reject the null hypothesis and conclude that the two methods for different types sulfamerazine is the same for all rates of sulfamerazine.
-
-The p value for testing H0: $\gamma_{i*j}$ = 0 for all (i, j) is 0.3769.
-So, there is no evidence for interaction.
 \begin{table}[ht]
 \caption{Treatment Parameterization in ANOVA}
 \label{tab:treatment}
