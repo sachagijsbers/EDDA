@@ -19,7 +19,6 @@ ggplot(hemoglobin_df, aes(x = factor(rate), y = hemoglobin, fill = factor(rate))
 library(dplyr)
 hemoglobin_df %>% group_by(rate, method) %>% summarise(n = n())
 
-
 ### a) 
 
 # Get all unique values from rate column in hemoglobin
@@ -63,7 +62,7 @@ xtable(anova(hemoglobin_aov))
 
 # Summary of test using treatment parameterization (alpha_1 = 0)
 summary(hemoglobin_aov)
-xtable(summary(hemoglobin_aov))
+
 
 # The rate of sulfamerazine seems to have a significant effect on the hemoglobin level
 # and thereby has a greater influence on the hemoglobin level.  
@@ -81,6 +80,7 @@ int_meth <- interaction.plot(method, rate, hemoglobin)
 # additive model
 hemoglobin_aov_2 <- lm(hemoglobin ~ rate+method, data = hemoglobin_df)
 anova(hemoglobin_aov_2)
+xtable(anova(hemoglobin_aov_2))
 
 # The p value for testing HA: alpha_i = 0 for all i is 2.02e-09.
 # The p value for testing HB: beta_j = 0 for all j is 0.2163.
