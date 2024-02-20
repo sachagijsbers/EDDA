@@ -15,6 +15,9 @@ ggplot(hemoglobin_df, aes(x = factor(rate), y = hemoglobin, fill = factor(rate))
   # title
   ggtitle("Hemoglobin levels by rate and method")
 
+# Test if data set is balanced design
+library(dplyr)
+hemoglobin_df %>% group_by(rate, method) %>% summarise(n = n())
 
 
 ### a) 
@@ -26,7 +29,7 @@ I <- length(rates)
 methods <- unique(hemoglobin_df$method)
 J <- length(methods)
 
-# Number of columns in the data (not sure if this is correct!)
+# Number of columns in the data 
 N <- 80/(I*J)
 
 # Randomization in R (from slides)
@@ -64,6 +67,14 @@ xtable(summary(hemoglobin_aov))
 
 # The rate of sulfamerazine seems to have a significant effect on the hemoglobin level
 # and thereby has a greater influence on the hemoglobin level.  
+
+rate <- hemoglobin_df$rate
+method <- hemoglobin_df$method
+hemoglobin <- hemoglobin_df$hemoglobin
+
+int_rate <- interaction.plot(rate, method, hemoglobin)
+int_meth <- interaction.plot(method, rate, hemoglobin)
+
 
 ### c)
 
