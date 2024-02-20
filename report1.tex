@@ -23,6 +23,9 @@
 }
 \usepackage{enumitem}
 \renewcommand\thesubsection{\Alph{subsection}}
+\usepackage{caption}
+\usepackage{subcaption}
+
 
 \title{Report 1}
 \author{You}
@@ -54,6 +57,22 @@ This dataset has an numerical data for hemoglobin and two factors (rate and meth
 in Listing \ref{lst:R}, an R-code for the randomization process to distribute 80 fishes over all combinations of levels of factors rate and method is shown.
 
 \subsection{Two-way ANOVA}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{.45\textwidth}
+        \centering
+        \includegraphics[height=5cm]{int_meth.png}
+        \label{fig:int_rate}
+    \end{subfigure}
+    \begin{subfigure}{.45\textwidth}
+        \centering
+        \includegraphics[height=5cm]{int_r.png}
+        \label{fig:int_method}
+    \end{subfigure}
+    \caption{Interaction plots comparing rate and method with hemoglobin levels. }
+\end{figure}
+
 To test the effects of factors rate, method and their interaction on the response variable hemoglobin, a Two-way ANOVA test was performed following the R-code in Listing \ref{lst:T}. 
 \begin{lstlisting}[caption="Two-way ANOVA", label={lst:T}]
     hemoglobin_df$rate <- as.factor(hemoglobin_df$rate) 
@@ -71,7 +90,7 @@ rate * method indicates rate + method + rate:method, so in this test, we test if
   \hline
  & Df & Sum Sq & Mean Sq & F value & Pr($>$F) \\ 
   \hline
-rate & 3 & 90.56 & 30.19 & 19.47 & 0.0000 \\ 
+rate & 3 & 90.56 & 30.19 & 19.47 & 2.404e-09 \\ 
   method & 1 & 2.42 & 2.42 & 1.56 & 0.2161 \\ 
   rate:method & 3 & 4.87 & 1.62 & 1.05 & 0.3769 \\ 
   Residuals & 72 & 111.64 & 1.55 &  &  \\ 
@@ -107,6 +126,28 @@ The p value for testing H0: $\gamma_{i*j}$ = 0 for all (i, j) is 0.3769. which m
     anova(hemoglobin_aov_2) 
 \end{lstlisting}
 
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrrr}
+  \hline
+ & Df & Sum Sq & Mean Sq & F value & Pr($>$F) \\ 
+  \hline
+rate & 3 & 90.56 & 30.19 & 19.43 & 2.02e-09 \\ 
+  method & 1 & 2.42 & 2.42 & 1.55 & 0.2163 \\ 
+  Residuals & 75 & 116.51 & 1.55 &  &  \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+The p value for testing HA: $\alpha_i = 0$ for all i is 2.02e-09.
+The p value for testing HB: $\beta_j = 0$ for all j is 0.2163.
+So only rate of sulfamerazinehas a main effect in the additive model.
+
+Concluding from the summary of hemoglobin\_aov, the combination of rate 2 with method B yields the highest hemoglobin level.
+
+Mean hemoglobin value for rate 3 by using method A from the summary of hemoglobin\_aov 7.200 + 1.83
+
+Mean hemoglobin value for rate 2 by using method B 7.200 + 2.13 - 0.45 + 1.26
 
 \subsection{One-way ANOVA}
 
