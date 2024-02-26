@@ -19,6 +19,7 @@ ggplot(hemoglobin_df, aes(x = factor(rate), y = hemoglobin, fill = factor(rate))
 library(dplyr)
 hemoglobin_df %>% group_by(rate, method) %>% summarise(n = n())
 
+
 ### a) 
 
 # Get all unique values from rate column in hemoglobin
@@ -99,7 +100,8 @@ xtable(anova(hemoglobin_aov_2))
 7.200 + 2.13 - 0.45 + 1.26
 
 # Checking the result
-mean(hemoglobin_df$hemoglobin[hemoglobin_df$rate == 2 & hemoglobin_df$method == "B"])
+mean(hemoglobin_df$hemoglobin[hemoglobin_df$rate == 3 & hemoglobin_df$method == "A"])
+mean(hemoglobin_df$hemoglobin[hemoglobin_df$rate == 2])
 
 # Rate 2 has the highest hemoglobin level when using any method.
 
