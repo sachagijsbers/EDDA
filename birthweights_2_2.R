@@ -42,7 +42,10 @@ plot(birthweight_model)
 # Collinearity
 birthweight_lm <- lm(Birthweight ~ Length + Headcirc + Gestation + mage + mnocig + mheight + mppwt + fage + fedyrs + fnocig + fheight, data = df)
 vif(birthweight_lm)
-# All VIF values are below 5, so no co-linearity.
+# All VIF values are below 5, so no collinearity.
+
+
+
 
 # b) step-down method, remove highest p-value
 summary(lm(Birthweight ~ Length + Headcirc + Gestation + mage + mnocig + mheight + mppwt + fage + fedyrs + fnocig + fheight, data = df))
@@ -70,9 +73,9 @@ xtable(summary(lm(Birthweight ~ Headcirc + Gestation, data = df)))
 vif(lm(Birthweight ~ Headcirc + Gestation, data = df))
 
 # c) 95% CI for lm(Birthweight ~ Headcirc + Gestation, data = df) for the average values of all the predictors in that model.
-confint(lm(Birthweight ~ Headcirc + Gestation, data = df))
+xtable(confint(lm(Birthweight ~ Headcirc + Gestation, data = df)))
 # prediction intervals
-predict(lm(Birthweight ~ Headcirc + Gestation, data = df), interval="prediction")
+xtable(predict(lm(Birthweight ~ Headcirc + Gestation, data = df), interval="prediction"))
 
 # d) LASSO
 library(glmnet)
@@ -104,13 +107,29 @@ View(df2)
 boxplot(df2$Birthweight ~ df2$smoker, xlab="smoker", ylab="Birthweight")
 boxplot(df2$Birthweight ~ df2$mage35, xlab="mage35", ylab="Birthweight")
 
-# t-test for Birthweight ~ smoker
-t.test(df2$Birthweight ~ df2$smoker)
+# count ones
+sum(df2$lowbwt[df2$smoker==0])
+sum(df2$lowbwt[df2$smoker==1])
+sum(df2$lowbwt[df2$mage35==0])
+sum(df2$lowbwt[df2$mage35==1])
 
-# t-test for Birthweight ~ mage35
-t.test(df2$Birthweight ~ df2$mage35)
+length(df2$lowbwt[df2$smoker==0])
+length(df2$lowbwt[df2$smoker==1])
+length(df2$lowbwt[df2$mage35==0])
+length(df2$lowbwt[df2$mage35==1])
+
+sum(df2$lowbwt[df2$smoker==0])/length(df2$lowbwt[df2$smoker==0])
+sum(df2$lowbwt[df2$smoker==1])/length(df2$lowbwt[df2$smoker==1])
+sum(df2$lowbwt[df2$mage35==0])/length(df2$lowbwt[df2$mage35==0])
+sum(df2$lowbwt[df2$mage35==1])/length(df2$lowbwt[df2$mage35==1])
+
+
+
 
 # f) logistic regression model
+df2$lowbwt <- as.factor(df2$lowbwt)
+birthweight_logistic <- glm(lowbwt ~ smoker + mage35, data = df2, family = binomial)
+summary(birthweight_logistic)
 
 
 # g) interaction between Gestation and smoker, and Gestation and mage35
@@ -119,4 +138,12 @@ t.test(df2$Birthweight ~ df2$mage35)
 # h) prob of low baby weight for each combi
 
 
-# i) contingency table
+# i) contingency table smoker and mage35 with lowbwt
+
+# Assuming df2 is your dataframe and lowbwt, smoker, and mage35 are the binary columns
+table(df2$lowbwt, df2$smoker) # Contingency table for low birth weight and smoker status
+table(df2$lowbwt, df2$mage35) # Contingency table for low birth weight and mother age > 35
+table(df2$smoker, df2$mage35) # Contingency table for smoker status and mother age > 35
+
+table(df2$lowbwt, df2$smoker, df2$mage35)
+
