@@ -101,7 +101,7 @@ print(mse.lasso)
 
 # e) smoking or older mothers lighter babies?
 # read csv with Birthweight, lowbwt, Gestation, smoker, mage35
-df2 <- read_csv("Birthweight_data.csv", col_types = cols(ID = col_skip(), Length = col_skip(), Headcirc = col_skip(), mage = col_skip(), mnocig = col_skip(), mheight = col_skip(), mppwt = col_skip(), fage = col_skip(), fedyrs = col_skip(), fnocig = col_skip(), fheight = col_skip()))
+df2 <- read_csv("Birthweight_data.csv", col_types = cols(ID = col_skip(), Length = col_skip(), Birthweight = col_skip(), Headcirc = col_skip(), mage = col_skip(), mnocig = col_skip(), mheight = col_skip(), mppwt = col_skip(), fage = col_skip(), fedyrs = col_skip(), fnocig = col_skip(), fheight = col_skip()))
 View(df2)
 
 boxplot(df2$Birthweight ~ df2$smoker, xlab="smoker", ylab="Birthweight")
@@ -127,16 +127,39 @@ sum(df2$lowbwt[df2$mage35==1])/length(df2$lowbwt[df2$mage35==1])
 
 
 # f) logistic regression model
-df2$lowbwt <- as.factor(df2$lowbwt)
 birthweight_logistic <- glm(lowbwt ~ smoker + mage35, data = df2, family = binomial)
+xtable(summary(birthweight_logistic))
+
+
+
+tot=xtabs(~smoker+mage35, data=df2)
+print(tot)
+tot.c=xtabs(lowbwt~smoker+mage35, data=df2)
+print(tot.c)
+xtable(round(tot.c/tot,2))
+
+# g) interaction between Gestation and smoker, and Gestation and mage35
+totage=xtabs(~Gestation, data=df2)
+barplot(xtabs(lowbwt~Gestation, data=df2)/totage, col=rainbow(10), ylab="low birth weight (%)", xlab="Gestation (weeks)")
+
+bw_log_smoker=glm(lowbwt~Gestation*smoker, data=df2, family=binomial)
+summary(bw_log_smoker)
+bw_log_mage35=glm(lowbwt~Gestation*mage35, data=df2, family=binomial)
+xtable(summary(bw_log_mage35))
+
+birthweight_logistic <- glm(lowbwt ~ Gestation + smoker + Gestation:smoker, data = df2, family = binomial)
 summary(birthweight_logistic)
 
 
-# g) interaction between Gestation and smoker, and Gestation and mage35
-
-
 # h) prob of low baby weight for each combi
+df2$smoker=as.factor(df2$smoker)
+df2$mage35=as.factor(df2$mage35)
+# make new dataframe where gestation is 40
+df3 <- df2[df2$Gestation==40,]
+View(df3)
 
+glm_h=glm(lowbwt~smoker+mage35, data=df3, family=binomial)
+summary(glm_h)
 
 # i) contingency table smoker and mage35 with lowbwt
 
@@ -145,5 +168,29 @@ table(df2$lowbwt, df2$smoker) # Contingency table for low birth weight and smoke
 table(df2$lowbwt, df2$mage35) # Contingency table for low birth weight and mother age > 35
 table(df2$smoker, df2$mage35) # Contingency table for smoker status and mother age > 35
 
-table(df2$lowbwt, df2$smoker, df2$mage35)
+# count ones where lowbwt is 1 and smoker is 1 and mage35 is 1
+sum(df2$lowbwt[df2$lowbwt==1 & df2$smoker==0 & df2$mage35==0])
 
+sum(df2$lowbwt[df2$lowbwt==1 & df2$smoker==1 & df2$mage35==1])
+
+sum(df2$lowbwt[df2$lowbwt==1 & df2$smoker==1 & df2$mage35==0])
+
+# count rows where lowbwt is 0 and smoker is 0 and mage35 is 0
+length(df2$lowbwt[df2$lowbwt==0 & df2$smoker==1 & df2$mage35==0])
+
+# where mage35 = 0
+length(df2$lowbwt[df2$mage35==1])
+
+
+# Creating the contingency table
+contingency_table <- table(df2$lowbwt, df2$smoker, df2$mage35)
+print(contingency_table)
+
+counts = matrix(c(18,1,15,2,1,0,4,1), byrow=TRUE, ncol=2, nrow=4)
+counts
+z = chisq.test(counts)
+z
+
+chisq.test(counts,simulate.p.value=TRUE)
+
+xtable(residuals(z))
